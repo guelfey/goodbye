@@ -6,7 +6,7 @@ enum {
 	bye_shutdown = 1,
 	bye_reboot,
 	bye_suspend,
-	bye_hibernate,
+	bye_hibernate
 };
 
 int main(int argc, char *argv[]) {
@@ -64,9 +64,10 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (dest) {
+		gchar* status;
 		message = g_dbus_message_new_method_call(NULL, path, interface, method);
 		g_dbus_message_set_destination(message, dest);
-		gchar* status = g_dbus_message_print(message, 0);
+		status = g_dbus_message_print(message, 0);
 		g_printerr("sending following message:\n%s", status);
 		g_free(status);
 		reply = g_dbus_connection_send_message_with_reply_sync(connection, 
@@ -81,12 +82,12 @@ int main(int argc, char *argv[]) {
 			g_error_free(error);
 			exit(1);
 		} else {
-			gchar* status = g_dbus_message_print(message, 0);
+			status = g_dbus_message_print(message, 0);
 			g_printerr("got response:\n%s", status);
 			g_free(status);
 		}
 	}
-//	g_unref(message);
+	g_object_unref(message);
 
 
 	return 0;
