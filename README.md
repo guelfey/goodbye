@@ -14,12 +14,11 @@ Dependencies:
 * for shutting down and rebooting: ConsoleKit
 * for suspending and hibernating: UPower
 
-Compiling:
+Compiling/Installing:
 ```
 $ make
+# make install
 ```
-
-A `make install` target will follow.
 
 If you run `bye`, please make sure the following conditions are met:
 
