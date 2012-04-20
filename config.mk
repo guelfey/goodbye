@@ -7,5 +7,5 @@ LIBS=`pkg-config --libs --cflags gtk+-2.0`
 # for GTK3:
 #LIBS=`pkg-config --libs --cflags gtk+-3.0`
 
-CFLAGS = $(LIBS) -Wall -pedantic -g
-LDFLAGS = $(LIBS) -Wall -pedantic -g
+CFLAGS = $(LIBS) -Wall -pedantic -g -std=c99
+LDFLAGS = $(LIBS) -Wall -pedantic -g -std=c99
