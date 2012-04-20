@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	/* GTK stuff */
-	window = gtk_dialog_new_with_buttons("Bye", NULL, 0,
+	window = gtk_dialog_new_with_buttons("Shutdown dialog", NULL, 0,
 	                                     "Shutdown", Shutdown,
 										 "Reboot", Reboot,
 										 "Suspend", Suspend,
