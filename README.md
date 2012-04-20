@@ -22,6 +22,7 @@ $ make
 A `make install` target will follow.
 
 If you run `bye`, please make sure the following conditions are met:
+
 1. Your session is registered with ConsoleKit.
 
 2. `dbus-daemon` is running.
