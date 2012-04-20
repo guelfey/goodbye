@@ -15,6 +15,6 @@ clean:
 install:
 	@echo Installing into $(PREFIX)/bin
 	@mkdir -p $(PREFIX)/bin
-	@install -m 755 bye $(PREFIX)/bin
+	@install -m 755 $(TARGET) $(PREFIX)/bin
 
 .PHONY: all clean
