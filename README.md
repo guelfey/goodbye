@@ -1,7 +1,7 @@
-bye - dead simple GTK/DBus shutdown dialog
+goodbye - dead simple GTK/DBus shutdown dialog
 ------------------------------------------
 
-`bye` is a simple application that does nothing else but to show a shutdown
+`goodbye` is a simple application that does nothing else but to show a shutdown
 dialog. This dialog gives you the choice to
 * shut down your system,
 * reboot your system,
@@ -20,7 +20,7 @@ $ make
 # make install
 ```
 
-If you run `bye`, please make sure the following conditions are met:
+If you run `goodbye`, please make sure the following conditions are met:
 
 1. Your session is registered with ConsoleKit.
 

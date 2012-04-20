@@ -1,7 +1,7 @@
 include config.mk
 
-TARGET = bye
-OBJS = bye.o
+TARGET = goodbye
+OBJS = goodbye.o
 
 all: $(TARGET)
 
