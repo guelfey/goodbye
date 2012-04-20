@@ -25,10 +25,37 @@
 #include <gio/gio.h>
 
 enum {
-	bye_shutdown = 1,
-	bye_reboot,
-	bye_suspend,
-	bye_hibernate
+	Shutdown = 0,
+	Reboot,
+	Suspend,
+	Hibernate
+};
+
+const char* names[4][4] = {
+	[Shutdown] = {
+		"org.freedesktop.ConsoleKit",
+		"/org/freedesktop/ConsoleKit/Manager",
+		"org.freedesktop.ConsoleKit.Manager",
+		"Stop"
+	},
+	[Reboot] = {
+		"org.freedesktop.ConsoleKit",
+		"/org/freedesktop/ConsoleKit/Manager",
+		"org.freedesktop.ConsoleKit.Manager",
+		"Restart"
+	},
+	[Suspend] = {
+		"org.freedesktop.UPower",
+		"/org/freedesktop/UPower",
+		"org.freedesktop.UPower",
+		"Suspend"
+	},
+	[Hibernate] = {
+		"org.freedesktop.UPower",
+		"/org/freedesktop/UPower",
+		"org.freedesktop.UPower",
+		"Hibernate"
+	}
 };
 
 int main(int argc, char *argv[]) {
@@ -37,7 +64,7 @@ int main(int argc, char *argv[]) {
 	GDBusConnection *connection = NULL;
 	GDBusMessage *message = NULL, *reply = NULL;
 	GError *error = NULL;
-	char *dest = NULL, *path = NULL, *interface = NULL, *method = NULL;
+	const char *dest = NULL, *path = NULL, *interface = NULL, *method = NULL;
 
 	gtk_init(&argc, &argv);
 
@@ -51,38 +78,19 @@ int main(int argc, char *argv[]) {
 
 	/* GTK stuff */
 	window = gtk_dialog_new_with_buttons("Bye", NULL, 0,
-	                                     "Shutdown", bye_shutdown,
-										 "Reboot", bye_reboot,
-										 "Suspend", bye_suspend,
-										 "Hibernate", bye_hibernate,
+	                                     "Shutdown", Shutdown,
+										 "Reboot", Reboot,
+										 "Suspend", Suspend,
+										 "Hibernate", Hibernate,
 										  NULL);
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	result = gtk_dialog_run( (GtkDialog*) window);
 
-	switch (result) {
-		case bye_shutdown:
-			dest = "org.freedesktop.ConsoleKit";
-			path = "/org/freedesktop/ConsoleKit/Manager";
-			interface = "org.freedesktop.ConsoleKit.Manager";
-			method = "Stop";
-			break;
-		case bye_reboot:
-			dest = "org.freedesktop.ConsoleKit";
-			path = "/org/freedesktop/ConsoleKit/Manager";
-			interface = "org.freedesktop.ConsoleKit.Manager";
-			method = "Restart";
-			break;
-		case bye_suspend:
-			dest = "org.freedesktop.UPower";
-			path = "/org/freedesktop/UPower";
-			interface = "org.freedesktop.UPower";
-			method = "Suspend";
-			break;
-		case bye_hibernate:
-			dest = "org.freedesktop.UPower";
-			path = "/org/freedesktop/UPower";
-			interface = "org.freedesktop.UPower";
-			method = "Hibernate";
+	if (result >= 0) {
+		dest = names[result][0];
+		path = names[result][1];
+		interface = names[result][2];
+		method = names[result][3];
 	}
 
 	if (dest) {
