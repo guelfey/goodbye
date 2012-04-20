@@ -22,6 +22,8 @@ $ make
 A `make install` target will follow.
 
 If you run `bye`, please make sure the following conditions are met:
-# Your session is registered with ConsoleKit.
-# `dbus-daemon` is running.
-# You are authorized by PolicyKit to perform the respective action.
+1. Your session is registered with ConsoleKit.
+
+2. `dbus-daemon` is running.
+
+3. You are authorized by PolicyKit to perform the respective action.
