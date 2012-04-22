@@ -32,4 +32,4 @@ If you run `goodbye`, please make sure the following conditions are met:
 3. You are authorized by PolicyKit to perform the respective action.
 
 ### Contact:
-Georg Reinke <guelfey at googlemail dot com>
+Georg Reinke `guelfey at googlemail dot com`
