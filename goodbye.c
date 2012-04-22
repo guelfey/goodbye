@@ -4,9 +4,14 @@
  * See LICENSE for copying details.
  */
 
-#include <stdlib.h>
+#define PROGNAME "goodbye"
+#define VERSION "0.0-git"
+
 #include <gtk/gtk.h>
 #include <gio/gio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 enum {
 	Shutdown = 0,
@@ -42,15 +47,46 @@ const char* names[4][4] = {
 	}
 };
 
+void version(int exit_val) {
+	g_printerr("%s %s\n", PROGNAME, VERSION);
+	g_printerr("(C) 2012 Georg Reinke, see LICENSE for details\n");
+
+	exit(exit_val);
+}
+
+void usage(int exit_val) {
+	g_printerr("USAGE: %s [OPTION]\n", PROGNAME);
+	g_printerr("OPTIONS:\n");
+	g_printerr("  -h|--help:    print this help\n");
+	g_printerr("  -v|--verbose: show some more information\n");
+	g_printerr("  --version:    show version and copyright notice\n");
+
+	exit(exit_val);
+}
 int main(int argc, char *argv[]) {
-	GtkWidget *window = NULL;
-	gint result;
+	bool verbose = false;
+	const char *dest = NULL, *path = NULL, *interface = NULL, *method = NULL;
 	GDBusConnection *connection = NULL;
 	GDBusMessage *message = NULL, *reply = NULL;
 	GError *error = NULL;
-	const char *dest = NULL, *path = NULL, *interface = NULL, *method = NULL;
+	gint result;
+	GtkWidget *window = NULL;
 
 	gtk_init(&argc, &argv);
+
+	if (argc > 1) {
+		if (argc > 2) 
+			usage(1);
+		if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) {
+			usage(0);
+		} else if (!strcmp(argv[1], "-v") || !strcmp(argv[1], "--verbose")) {
+			verbose = true;
+		} else if (!strcmp(argv[1], "--version")) {
+			version(0);
+		} else {
+			usage(1);
+		}
+	}
 
 	/* DBus stuff */
 	connection = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &error);
@@ -78,12 +114,13 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (dest) {
-		gchar* status;
 		message = g_dbus_message_new_method_call(NULL, path, interface, method);
 		g_dbus_message_set_destination(message, dest);
-		status = g_dbus_message_print(message, 0);
-		g_printerr("sending following message:\n%s", status);
-		g_free(status);
+		if (verbose) {
+			gchar* status = g_dbus_message_print(message, 0);
+			g_printerr("sending following message:\n%s", status);
+			g_free(status);
+		}
 		reply = g_dbus_connection_send_message_with_reply_sync(connection, 
 			                                                   message,
 				  						                       0,
@@ -95,8 +132,8 @@ int main(int argc, char *argv[]) {
 			g_printerr("Failed to send message: %s\n", error->message);
 			g_error_free(error);
 			exit(1);
-		} else {
-			status = g_dbus_message_print(message, 0);
+		} else if (verbose) {
+			gchar* status = g_dbus_message_print(message, 0);
 			g_printerr("got response:\n%s", status);
 			g_free(status);
 		}
