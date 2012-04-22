@@ -1,19 +1,16 @@
 include config.mk
 
-TARGET = goodbye
-OBJS = goodbye.o
-
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) -o $(TARGET) $(OBJS)
+$(TARGET): $(SRC)
+	@echo CC $(TARGET)
+	@$(CC) $(LDFLAGS) -o $(TARGET) $(SRC) -DPROGNAME=\"$(TARGET)\" \
+	-DVERSION=\"$(VERSION)\"
 
 clean:
-	@echo Cleaning up...
-	@rm $(TARGET) $(OBJS)
+	@rm -f $(TARGET)
 
 install:
-	@echo Installing into $(PREFIX)/bin
 	@mkdir -p $(PREFIX)/bin
 	@install -m 755 $(TARGET) $(PREFIX)/bin
 

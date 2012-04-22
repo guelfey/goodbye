@@ -9,3 +9,7 @@ LIBS=`pkg-config --libs --cflags gtk+-2.0`
 
 CFLAGS = $(LIBS) -Wall -pedantic -g -std=c99
 LDFLAGS = $(LIBS) -Wall -pedantic -g -std=c99
+VERSION = 0.0-git
+TARGET = goodbye
+SRC = goodbye.c
+

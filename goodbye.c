@@ -4,9 +4,6 @@
  * See LICENSE for copying details.
  */
 
-#define PROGNAME "goodbye"
-#define VERSION "0.0-git"
-
 #include <gtk/gtk.h>
 #include <gio/gio.h>
 #include <stdbool.h>
@@ -55,6 +52,7 @@ void version(int exit_val) {
 }
 
 void usage(int exit_val) {
+	g_printerr("%s - dead simple GTK/D-Bus shutdown dialog\n", PROGNAME);
 	g_printerr("USAGE: %s [OPTION]\n", PROGNAME);
 	g_printerr("OPTIONS:\n");
 	g_printerr("  -h|--help:    print this help\n");
@@ -63,6 +61,7 @@ void usage(int exit_val) {
 
 	exit(exit_val);
 }
+
 int main(int argc, char *argv[]) {
 	bool verbose = false;
 	const char *dest = NULL, *path = NULL, *interface = NULL, *method = NULL;
@@ -139,6 +138,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	g_object_unref(message);
+	g_object_unref(connection);
 
 
 	return 0;
