@@ -14,4 +14,4 @@ install:
 	@mkdir -p $(PREFIX)/bin
 	@install -m 755 $(TARGET) $(PREFIX)/bin
 
-.PHONY: all clean
+.PHONY: all clean install
