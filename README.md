@@ -1,4 +1,4 @@
-goodbye - dead simple GTK/DBus shutdown dialog
+goodbye - dead simple GTK/D-Bus shutdown dialog
 ------------------------------------------
 
 `goodbye` is a simple application that does nothing else but to show a shutdown
@@ -12,7 +12,7 @@ dialog. This dialog gives you the choice to
 * a C compiler 
 * Make
 * GTK3 or GTK2
-* DBus
+* D-Bus
 * for shutting down and rebooting: ConsoleKit
 * for suspending and hibernating: UPower
 

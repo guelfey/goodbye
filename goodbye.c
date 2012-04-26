@@ -1,4 +1,4 @@
-/* goodbye - dead simple GTK/DBus shutdown dialog.
+/* goodbye - dead simple GTK/D-Bus shutdown dialog.
  * Copyright (C) 2012 Georg Reinke. All rights reserved.
  *
  * See LICENSE for copying details.
