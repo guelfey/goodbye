@@ -116,26 +116,36 @@ int main(int argc, char *argv[]) {
 		message = g_dbus_message_new_method_call(NULL, path, interface, method);
 		g_dbus_message_set_destination(message, dest);
 		if (verbose) {
+			/* Only send message with reply if verbose is set */
 			gchar* status = g_dbus_message_print(message, 0);
 			g_printerr("sending following message:\n%s", status);
 			g_free(status);
+			reply = g_dbus_connection_send_message_with_reply_sync(connection,
+		    	                                                   message,   
+		    		  						                       0,         
+		    													   -1,        
+		    													   NULL,      
+		    								                       NULL,      
+		    								                       &error);
+			if (!reply) {
+				g_printerr("Failed to send message: %s\n", error->message);
+				g_error_free(error);
+				exit(1);
+			} else {
+				status = g_dbus_message_print(message, 0);
+				g_printerr("got response:\n%s", status);
+				g_free(status);
+			}
+		} else {
+			if (g_dbus_connection_send_message(connection, message, 0, NULL,
+				                               &error) != TRUE) {
+				g_printerr("Faled to send message: %s\n", error->message);
+				g_error_free(error);
+				exit(1);
+			}
 		}
-		reply = g_dbus_connection_send_message_with_reply_sync(connection, 
-			                                                   message,
-				  						                       0,
-															   -1,
-															   NULL,
-										                       NULL,
-										                       &error);
-		if (!reply) {
-			g_printerr("Failed to send message: %s\n", error->message);
-			g_error_free(error);
-			exit(1);
-		} else if (verbose) {
-			gchar* status = g_dbus_message_print(message, 0);
-			g_printerr("got response:\n%s", status);
-			g_free(status);
-		}
+		
+		
 	}
 	g_object_unref(message);
 	g_object_unref(connection);
