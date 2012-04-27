@@ -1,4 +1,5 @@
 Some things that might be added:
+- if verbose isn't set, don't wait for a reply and don't use the sync version
 - add nice symbols to the buttons
 - use a normal GtkWindow instead of a dialog and use a different layout for the
   buttons
