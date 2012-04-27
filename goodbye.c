@@ -19,30 +19,42 @@ enum {
 };
 
 static bool verbose = false;
-static const char* names[4][4] = {
+
+/* The names of some things associated whith each button.
+ * names[i][0]: D-Bus destination address
+ * names[i][1]: D-Bus object path
+ * names[i][2]: D-Bus interface name
+ * names[i][3]: D-Bus method name (and button label)
+ * names[i][4]: GTK icon name
+ */
+static const char* names[4][5] = {
 	[Shutdown] = {
 		"org.freedesktop.ConsoleKit",
 		"/org/freedesktop/ConsoleKit/Manager",
 		"org.freedesktop.ConsoleKit.Manager",
-		"Stop"
+		"Stop",
+		"system-shutdown"
 	},
 	[Reboot] = {
 		"org.freedesktop.ConsoleKit",
 		"/org/freedesktop/ConsoleKit/Manager",
 		"org.freedesktop.ConsoleKit.Manager",
-		"Restart"
+		"Restart",
+		"system-restart"
 	},
 	[Suspend] = {
 		"org.freedesktop.UPower",
 		"/org/freedesktop/UPower",
 		"org.freedesktop.UPower",
-		"Suspend"
+		"Suspend",
+		"system-suspend"
 	},
 	[Hibernate] = {
 		"org.freedesktop.UPower",
 		"/org/freedesktop/UPower",
 		"org.freedesktop.UPower",
-		"Hibernate"
+		"Hibernate",
+		"system-suspend-hibernate"
 	}
 };
 
@@ -123,6 +135,7 @@ void handle_clicked(GtkWidget *widget, gpointer data) {
 int main(int argc, char *argv[]) {
 	GtkWidget *window, *box;
 	GtkWidget *buttons[4];
+	GtkWidget *icons[4];
 
 	gtk_init(&argc, &argv);
 
@@ -140,24 +153,26 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	/* GTK stuff */
-	//window = gtk_dialog_new_with_buttons("Shutdown dialog", NULL, 0,
-	//         "Shutdown", Shutdown, "Reboot", Reboot, "Suspend", Suspend,
-	//         "Hibernate", Hibernate, NULL);
 	/* create the window */
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(window), "Goodbye");
 	gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
 	gtk_window_set_type_hint(GTK_WINDOW(window), GDK_WINDOW_TYPE_HINT_DIALOG);
 
-	/* create the buttons */
-	for (int i = 0; i < 4; ++i)
+	/* create the buttons and their icons*/
+	for (int i = 0; i < 4; ++i) {
 		buttons[i] = gtk_button_new_with_label(names[i][3]);
+		icons[i] = gtk_image_new_from_icon_name(names[i][4], 
+		GTK_ICON_SIZE_BUTTON);
+		gtk_button_set_image(GTK_BUTTON(buttons[i]), icons[i]);
+	}
+
 
 	/* create the box */
 	box = gtk_hbutton_box_new();
 	for (int i = 0; i < 4; ++i) 
 		gtk_container_add(GTK_CONTAINER(box), buttons[i]);
+
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(box), GTK_BUTTONBOX_CENTER);
 	gtk_container_add(GTK_CONTAINER(window), box);
 
