@@ -8,10 +8,13 @@ dialog. This dialog gives you the choice to
 * suspend to RAM or to
 * hibernate (suspend to disk).
 
-### Dependencies:
+### Builtime dependencies:
 * a C compiler 
 * Make
-* GTK3 or GTK2
+* GTK2 (GTK3 should also work, but no support is guaranteed)
+
+### Runtime dependencies:
+* GTK2 / GTK3
 * D-Bus
 * for shutting down and rebooting: ConsoleKit
 * for suspending and hibernating: UPower
@@ -27,7 +30,7 @@ If you run `goodbye`, please make sure the following conditions are met:
 
 1. Your session is registered with ConsoleKit.
 
-2. `dbus-daemon` is running.
+2. The D-Bus system bus is accessible (`dbus-daemon --system` is running).
 
 3. You are authorized by PolicyKit to perform the respective action.
 
