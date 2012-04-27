@@ -1,4 +1,3 @@
-Some things that might be added:
+Some things that might be added/done:
+- exit GTK and close the window before perfoming the action
 - add nice symbols to the buttons
-- use a normal GtkWindow instead of a dialog and use a different layout for the
-  buttons
