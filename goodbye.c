@@ -97,11 +97,8 @@ int main(int argc, char *argv[]) {
 
 	/* GTK stuff */
 	window = gtk_dialog_new_with_buttons("Shutdown dialog", NULL, 0,
-	                                     "Shutdown", Shutdown,
-										 "Reboot", Reboot,
-										 "Suspend", Suspend,
-										 "Hibernate", Hibernate,
-										  NULL);
+	         "Shutdown", Shutdown, "Reboot", Reboot, "Suspend", Suspend,
+	         "Hibernate", Hibernate, NULL);
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	result = gtk_dialog_run( (GtkDialog*) window);
 
@@ -121,12 +118,7 @@ int main(int argc, char *argv[]) {
 			g_free(status);
 		}
 		reply = g_dbus_connection_send_message_with_reply_sync(connection, 
-			                                                   message,
-				  						                       0,
-															   -1,
-															   NULL,
-										                       NULL,
-										                       &error);
+		        message, 0, -1, NULL, NULL, &error);
 		if (!reply) {
 			g_printerr("Failed to send message: %s\n", error->message);
 			g_error_free(error);
