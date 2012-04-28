@@ -18,45 +18,47 @@ enum {
 	Hibernate
 };
 
-static bool verbose = false;
+/* The names of some things associated whith each button. */
+enum {
+	Destination = 0,
+	Object,
+	Interface,
+	Method,
+	Icon
+};
 
-/* The names of some things associated whith each button.
- * names[i][0]: D-Bus destination address
- * names[i][1]: D-Bus object path
- * names[i][2]: D-Bus interface name
- * names[i][3]: D-Bus method name (and button label)
- * names[i][4]: GTK icon name
- */
 static const char* names[4][5] = {
 	[Shutdown] = {
-		"org.freedesktop.ConsoleKit",
-		"/org/freedesktop/ConsoleKit/Manager",
-		"org.freedesktop.ConsoleKit.Manager",
-		"Stop",
-		"system-shutdown"
+		[Destination] = "org.freedesktop.ConsoleKit",
+		[Object] = "/org/freedesktop/ConsoleKit/Manager",
+		[Interface] = "org.freedesktop.ConsoleKit.Manager",
+		[Method] = "Stop",
+		[Icon] = "system-shutdown"
 	},
 	[Reboot] = {
-		"org.freedesktop.ConsoleKit",
-		"/org/freedesktop/ConsoleKit/Manager",
-		"org.freedesktop.ConsoleKit.Manager",
-		"Restart",
-		"system-restart"
+		[Destination] = "org.freedesktop.ConsoleKit",
+		[Object] = "/org/freedesktop/ConsoleKit/Manager",
+		[Interface] = "org.freedesktop.ConsoleKit.Manager",
+		[Method] = "Restart",
+		[Icon] = "system-restart"
 	},
 	[Suspend] = {
-		"org.freedesktop.UPower",
-		"/org/freedesktop/UPower",
-		"org.freedesktop.UPower",
-		"Suspend",
-		"system-suspend"
+		[Destination] = "org.freedesktop.UPower",
+		[Object] = "/org/freedesktop/UPower",
+		[Interface] = "org.freedesktop.UPower",
+		[Method] = "Suspend",
+		[Icon] = "system-suspend"
 	},
 	[Hibernate] = {
-		"org.freedesktop.UPower",
-		"/org/freedesktop/UPower",
-		"org.freedesktop.UPower",
-		"Hibernate",
-		"system-suspend-hibernate"
+		[Destination] = "org.freedesktop.UPower",
+		[Object] = "/org/freedesktop/UPower",
+		[Interface] = "org.freedesktop.UPower",
+		[Method] = "Hibernate",
+		[Icon] = "system-suspend-hibernate"
 	}
 };
+
+static bool verbose = false;
 
 void version(int exit_val) {
 	g_printerr("%s %s\n", PROGNAME, VERSION);
@@ -87,7 +89,7 @@ void handle_clicked(GtkWidget *widget, gpointer data) {
 	/* figure out which button was pressed */
 	label = gtk_button_get_label(GTK_BUTTON(widget));
 	for (int i = 0; i < 4; ++i) {
-		if (!strcmp(label, names[i][3])) {
+		if (!strcmp(label, names[i][Method])) {
 			action = i;
 			break;
 		}
@@ -95,10 +97,10 @@ void handle_clicked(GtkWidget *widget, gpointer data) {
 
 	assert(action >= 0);
 
-	dest = names[action][0];
-	path = names[action][1];
-	interface = names[action][2];
-	method = names[action][3];
+	dest = names[action][Destination];
+	path = names[action][Object];
+	interface = names[action][Interface];
+	method = names[action][Method];
 
 	/* DBus stuff */
 	connection = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &error);
@@ -161,8 +163,8 @@ int main(int argc, char *argv[]) {
 
 	/* create the buttons and their icons*/
 	for (int i = 0; i < 4; ++i) {
-		buttons[i] = gtk_button_new_with_label(names[i][3]);
-		icons[i] = gtk_image_new_from_icon_name(names[i][4], 
+		buttons[i] = gtk_button_new_with_label(names[i][Method]);
+		icons[i] = gtk_image_new_from_icon_name(names[i][Icon], 
 		GTK_ICON_SIZE_BUTTON);
 		gtk_button_set_image(GTK_BUTTON(buttons[i]), icons[i]);
 	}
