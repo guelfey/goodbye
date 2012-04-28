@@ -24,15 +24,17 @@ enum {
 	Object,
 	Interface,
 	Method,
+	Label,
 	Icon
 };
 
-static const char* names[4][5] = {
+static const char* names[4][6] = {
 	[Shutdown] = {
 		[Destination] = "org.freedesktop.ConsoleKit",
 		[Object] = "/org/freedesktop/ConsoleKit/Manager",
 		[Interface] = "org.freedesktop.ConsoleKit.Manager",
 		[Method] = "Stop",
+		[Label] = "Shutdown",
 		[Icon] = "system-shutdown"
 	},
 	[Reboot] = {
@@ -40,6 +42,7 @@ static const char* names[4][5] = {
 		[Object] = "/org/freedesktop/ConsoleKit/Manager",
 		[Interface] = "org.freedesktop.ConsoleKit.Manager",
 		[Method] = "Restart",
+		[Label] = "Reboot", 
 		[Icon] = "system-restart"
 	},
 	[Suspend] = {
@@ -47,6 +50,7 @@ static const char* names[4][5] = {
 		[Object] = "/org/freedesktop/UPower",
 		[Interface] = "org.freedesktop.UPower",
 		[Method] = "Suspend",
+		[Label] = "Suspend",
 		[Icon] = "system-suspend"
 	},
 	[Hibernate] = {
@@ -54,6 +58,7 @@ static const char* names[4][5] = {
 		[Object] = "/org/freedesktop/UPower",
 		[Interface] = "org.freedesktop.UPower",
 		[Method] = "Hibernate",
+		[Label] = "Hibernate",
 		[Icon] = "system-suspend-hibernate"
 	}
 };
@@ -89,7 +94,7 @@ void handle_clicked(GtkWidget *widget, gpointer data) {
 	/* figure out which button was pressed */
 	label = gtk_button_get_label(GTK_BUTTON(widget));
 	for (int i = 0; i < 4; ++i) {
-		if (!strcmp(label, names[i][Method])) {
+		if (!strcmp(label, names[i][Label])) {
 			action = i;
 			break;
 		}
@@ -163,7 +168,7 @@ int main(int argc, char *argv[]) {
 
 	/* create the buttons and their icons*/
 	for (int i = 0; i < 4; ++i) {
-		buttons[i] = gtk_button_new_with_label(names[i][Method]);
+		buttons[i] = gtk_button_new_with_label(names[i][Label]);
 		icons[i] = gtk_image_new_from_icon_name(names[i][Icon], 
 		GTK_ICON_SIZE_BUTTON);
 		gtk_button_set_image(GTK_BUTTON(buttons[i]), icons[i]);
