@@ -34,5 +34,9 @@ If you run `goodbye`, please make sure the following conditions are met:
 
 3. You are authorized by PolicyKit to perform the respective action.
 
+### License:
+This software is licensed under the MIT/X Consortium License.
+See LICENSE for more details.
+
 ### Contact:
 Georg Reinke `guelfey at googlemail dot com`
