@@ -3,6 +3,8 @@ include config.mk
 all: $(TARGET)
 
 $(TARGET): $(SRC)
+	@echo "CFLAGS  = $(CFLAGS)"
+	@echo "LDFLAGS = $(LDFLAGS)"
 	@echo "CC      $(TARGET)"
 	@$(CC) $(LDFLAGS) -o $(TARGET) $(SRC) -DPROGNAME=\"$(TARGET)\" \
 	-DVERSION=\"$(VERSION)\"
