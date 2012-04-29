@@ -85,21 +85,12 @@ void usage(int exit_val) {
 
 void handle_clicked(GtkWidget *widget, gpointer data) {
 	const char *dest = NULL, *path = NULL, *interface = NULL, *method = NULL;
-	const gchar* label;
 	GDBusConnection *connection = NULL;
 	GDBusMessage *message = NULL, *reply = NULL;
 	GError *error = NULL;
 	int action = -1;
 
-	/* figure out which button was pressed */
-	label = gtk_button_get_label(GTK_BUTTON(widget));
-	for (int i = 0; i < 4; ++i) {
-		if (!strcmp(label, names[i][Label])) {
-			action = i;
-			break;
-		}
-	}
-
+	action = GPOINTER_TO_INT(data);
 	assert(action >= 0);
 
 	dest = names[action][Destination];
@@ -186,7 +177,8 @@ int main(int argc, char *argv[]) {
 	/* add the signals */
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	for (int i = 0; i < 4; ++i)
-		g_signal_connect(buttons[i], "clicked", G_CALLBACK(handle_clicked), NULL);
+		g_signal_connect(buttons[i], "clicked", G_CALLBACK(handle_clicked),
+		                 GINT_TO_POINTER(i));
 
 	/* show window and quit */
 	gtk_widget_show_all(window);
