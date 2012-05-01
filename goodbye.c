@@ -167,7 +167,12 @@ int main(int argc, char *argv[]) {
 
 
 	/* create the box */
+#ifdef USE_GTK3
+	box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
+#else
 	box = gtk_hbutton_box_new();
+#endif /* USE_GTK3 */
+
 	for (int i = 0; i < 4; ++i) 
 		gtk_container_add(GTK_CONTAINER(box), buttons[i]);
 

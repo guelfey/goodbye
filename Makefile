@@ -2,21 +2,26 @@ include config.mk
 
 all: $(TARGET)
 
-$(TARGET): $(SRC)
+options:
 	@echo "CFLAGS  = $(CFLAGS)"
 	@echo "LDFLAGS = $(LDFLAGS)"
-	@echo "CC      $(TARGET)"
-	@$(CC) $(LDFLAGS) -o $(TARGET) $(SRC) -DPROGNAME=\"$(TARGET)\" \
-	-DVERSION=\"$(VERSION)\"
+	
+$(TARGET): options $(OBJ)
+	@echo LD $@
+	@$(CC) $(LDFLAGS) $(CPPFLAGS) -o $(TARGET) $(SRC) 
+
+%.o: %.c
+	@echo CC $@
+	@$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 
 clean:
-	@echo "RM      $(TARGET)"
-	@rm -f $(TARGET)
+	@echo "RM $(TARGET) $(OBJ)"
+	@rm -f $(TARGET) $(OBJ)
 
 install:
-	@echo "MKDIR   $(PREFIX)/bin"
+	@echo "MKDIR $(PREFIX)/bin"
 	@mkdir -p $(PREFIX)/bin
 	@echo "INSTALL $(TARGET) $(PREFIX)/bin"
 	@install -m 755 $(TARGET) $(PREFIX)/bin
 
-.PHONY: all clean install
+.PHONY: all options clean install
