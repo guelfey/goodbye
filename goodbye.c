@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* The actions. */
 enum {
 	Shutdown = 0,
 	Reboot,
@@ -85,42 +86,44 @@ void usage(int exit_val) {
 
 void handle_clicked(GtkWidget *widget, gpointer data) {
 	const char *dest = NULL, *path = NULL, *interface = NULL, *method = NULL;
+	int action = -1;
 	GDBusConnection *connection = NULL;
 	GDBusMessage *message = NULL, *reply = NULL;
 	GError *error = NULL;
-	int action = -1;
 
 	action = GPOINTER_TO_INT(data);
-	assert(action >= 0);
+	assert(action >= 0 && action < sizeof(names));
 
 	dest = names[action][Destination];
 	path = names[action][Object];
 	interface = names[action][Interface];
 	method = names[action][Method];
 
-	/* DBus stuff */
+	/* get system bus */
 	connection = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &error);
 	if (!connection) {
 		g_printerr("Failed to connect to system bus: %s\n", error->message);
-		g_error_free(error);
 		exit(1);
 	}
 
+	/* create message */
 	message = g_dbus_message_new_method_call(NULL, path, interface, method);
 	g_dbus_message_set_destination(message, dest);
 	if (verbose) {
-		gchar* status = g_dbus_message_print(message, 0);
+		gchar *status = g_dbus_message_print(message, 0);
 		g_printerr("sending following message:\n%s", status);
 		g_free(status);
 	}
+
+	/* send message */
 	reply = g_dbus_connection_send_message_with_reply_sync(connection, 
 			message, 0, -1, NULL, NULL, &error);
+
 	if (!reply) {
 		g_printerr("Failed to send message: %s\n", error->message);
-		g_error_free(error);
 		exit(1);
 	} else if (verbose) {
-		gchar* status = g_dbus_message_print(message, 0);
+		gchar *status = g_dbus_message_print(reply, 0);
 		g_printerr("got response:\n%s", status);
 		g_free(status);
 	}
