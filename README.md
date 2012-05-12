@@ -11,7 +11,7 @@ dialog. This dialog gives you the choice to
 ### Builtime dependencies:
 * a C compiler 
 * Make
-* GTK2 (GTK3 should also work, but no support is guaranteed)
+* GTK2 or GTK3
 
 ### Runtime dependencies:
 * GTK2 / GTK3
