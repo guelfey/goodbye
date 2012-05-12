@@ -1,4 +1,4 @@
-VERSION = 0.0-git
+VERSION = 0.1
 TARGET = goodbye
 
 # customize this
